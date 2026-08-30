@@ -13,19 +13,16 @@
   --text-muted: #a8a496;
   --text-dim: #6b675c;
 
-  --car-surface: #131311;
-  --car-border: #333330;
-  --car-accent: #ff5a2c;
-  --car-accent-soft: #ff7a45;
-  --car-text: #f5f5f3;
-  --car-text-muted: #b8b8b4;
+  /* One neutral card surface for every option — only the accent hue
+     changes per service, echoing that service's own booking page. */
+  --card-surface: #18181a;
+  --card-border: #302f2a;
+  --card-text: #f5f4f0;
+  --card-text-muted: #a8a496;
 
-  --air-surface: #f7f2e8;
-  --air-border: #d6cbb2;
-  --air-accent: #5f6f45;
-  --air-accent-soft: #556238;
-  --air-text: #2c2a22;
-  --air-text-muted: #4a4436;
+  --car-accent: #ff5a2c;
+  --air-accent: #93b06a;
+  --re-accent: #c9a06a;
 }
 
 * { box-sizing: border-box; }
@@ -79,8 +76,9 @@ body {
 .card {
   display: block;
   text-decoration: none;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1.5px solid var(--card-border);
+  border-left: 4px solid var(--card-accent);
   background: var(--card-surface);
   color: var(--card-text);
   padding: 1.5rem 1.6rem;
@@ -89,6 +87,7 @@ body {
 
 .card:hover {
   border-color: var(--card-accent);
+  border-left-color: var(--card-accent);
   transform: translateY(-1px);
 }
 
@@ -97,19 +96,9 @@ body {
   outline-offset: 2px;
 }
 
-.card.car {
-  --card-surface: var(--car-surface);
-  --card-border: var(--car-border);
-  --card-accent: var(--car-accent);
-  --card-text: var(--car-text);
-}
-
-.card.air {
-  --card-surface: var(--air-surface);
-  --card-border: var(--air-border);
-  --card-accent: var(--air-accent);
-  --card-text: var(--air-text);
-}
+.card.car { --card-accent: var(--car-accent); }
+.card.air { --card-accent: var(--air-accent); }
+.card.re { --card-accent: var(--re-accent); }
 
 .card-eyebrow {
   font-family: 'IBM Plex Mono', monospace;
@@ -117,10 +106,8 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 600;
+  color: var(--card-accent);
 }
-
-.card.car .card-eyebrow { color: var(--car-accent-soft); }
-.card.air .card-eyebrow { color: var(--air-accent); }
 
 .card-top {
   display: flex;
@@ -140,19 +127,15 @@ body {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1.3rem;
   flex-shrink: 0;
+  color: var(--card-accent);
 }
-
-.card.car .card-arrow { color: var(--car-accent); }
-.card.air .card-arrow { color: var(--air-accent); }
 
 .card-desc {
   font-size: 0.9rem;
   margin-top: 0.5rem;
   max-width: 42ch;
+  color: var(--card-text-muted);
 }
-
-.card.car .card-desc { color: var(--car-text-muted); }
-.card.air .card-desc { color: var(--air-text-muted); }
 
 footer {
   border-top: 1px solid #262622;
@@ -188,6 +171,15 @@ footer {
         <span class="card-arrow">&rarr;</span>
       </div>
       <div class="card-desc">Photos and video that get a listing seen, trusted, and booked over the one next door.</div>
+    </a>
+
+    <a class="card re" href="real-estate/">
+      <div class="card-eyebrow">More enquiries, not more days on market</div>
+      <div class="card-top">
+        <span class="card-name">Real Estate Shoot</span>
+        <span class="card-arrow">&rarr;</span>
+      </div>
+      <div class="card-desc">Photos and video that get a listing noticed first and taken seriously.</div>
     </a>
   </div>
 
