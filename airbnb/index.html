@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airbnb Shoot Booking — Kenn B</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+  --bg: #efe8db;
+  --surface: #f7f2e8;
+  --surface-2: #e4dcc8;
+  --border: #d6cbb2;
+  --text: #2c2a22;
+  --text-muted: #4a4436;
+  --text-dim: #948c78;
+  --accent: #5f6f45;
+  --accent-soft: #798f52;
+  --accent-ink: #f7f2e8;
+  --ok: #3d7a4f;
+  --err: #a8563c;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+header {
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.brand {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 2.2rem;
+  line-height: 0.9;
+  color: var(--text);
+}
+
+.doc-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-top: 0.4rem;
+}
+
+.intro {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-top: 0.75rem;
+  max-width: 50ch;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+h2 {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.005em;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.9rem;
+  color: var(--text);
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.field.full { grid-column: 1 / -1; }
+
+label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+input[type="text"], input[type="tel"], input[type="email"], input[type="date"] {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 0.92rem;
+  padding: 0.55rem 0.7rem;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+input::placeholder { color: var(--text-dim); }
+
+.packages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.pkg {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+}
+
+.pkg:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.pkg input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.pkg input[type="radio"]:checked {
+  border-color: var(--accent);
+}
+
+.pkg input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.pkg-body { flex: 1; }
+
+.pkg-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.pkg-name {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+
+.pkg-price {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  color: var(--accent-soft);
+  font-size: 1.05rem;
+}
+
+.pkg-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.summary {
+  background: var(--surface-2);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.summary-item { text-align: left; }
+
+.summary-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.summary-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-top: 0.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-value.accent { color: var(--accent-soft); }
+
+.terms-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  max-height: 220px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.terms-box ul { margin: 0; padding-left: 1.1rem; }
+.terms-box li { margin-bottom: 0.6rem; }
+.terms-box li:last-child { margin-bottom: 0; }
+
+.agree-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.agree-row input[type="checkbox"] {
+  appearance: none;
+  width: 19px;
+  height: 19px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  cursor: pointer;
+  position: relative;
+  background: var(--surface);
+}
+
+.agree-row input[type="checkbox"]:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.agree-row input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--accent-ink);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.agree-text {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.submit-btn {
+  width: 100%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border: none;
+  border-radius: 8px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.98rem;
+  padding: 0.9rem;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background: var(--surface-2);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+.submit-btn:not(:disabled):hover { background: var(--accent-soft); }
+
+.msg {
+  font-size: 0.82rem;
+  margin-top: 0.6rem;
+  display: none;
+}
+
+.msg.error { color: var(--err); }
+
+.confirm {
+  display: none;
+}
+
+.confirm-box {
+  background: var(--surface-2);
+  border: 1.5px solid var(--ok);
+  border-radius: 8px;
+  padding: 1.25rem 1.4rem;
+}
+
+.confirm-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 700;
+  color: var(--ok);
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.confirm-box p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .field-grid { grid-template-columns: 1fr; }
+  .summary { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand">KENN&nbsp;B</div>
+    <div class="doc-title">Airbnb Shoot Booking &amp; Agreement</div>
+    <p class="intro">Fill this out, pick a package, and sign at the bottom. Submitting sends it straight to Kenn.</p>
+  </header>
+
+  <form id="bookingForm">
+    <section>
+      <h2>Your details</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label for="clientName">Name</label>
+          <input type="text" id="clientName" name="name" required>
+        </div>
+        <div class="field">
+          <label for="clientContact">Phone or email</label>
+          <input type="text" id="clientContact" name="contact" required>
+        </div>
+        <div class="field">
+          <label for="shootDate">Preferred shoot date</label>
+          <input type="date" id="shootDate" name="shoot_date" required>
+        </div>
+        <div class="field">
+          <label for="location">Property address</label>
+          <input type="text" id="location" name="location" placeholder="Suburb or full address" required>
+        </div>
+        <div class="field full">
+          <label for="listing">Listing name / platform</label>
+          <input type="text" id="listing" name="listing" placeholder="e.g. Cosy Braddon Apartment, Airbnb" required>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Choose a package</h2>
+      <div class="packages" id="packages">
+        <label class="pkg">
+          <input type="radio" name="package" value="Listing Shoot" data-price="150">
+          <div class="pkg-body">
+            <div class="pkg-top">
+              <span class="pkg-name">Listing Shoot</span>
+              <span class="pkg-price">$150</span>
+            </div>
+            <div class="pkg-desc">Up to 20 edited photos, every room plus key exterior/amenity shots. Delivered 24&ndash;48 hrs.</div>
+          </div>
+        </label>
+
+        <label class="pkg">
+          <input type="radio" name="package" value="Booking Boost Bundle" data-price="380" checked>
+          <div class="pkg-body">
+            <div class="pkg-top">
+              <span class="pkg-name">Booking Boost Bundle</span>
+              <span class="pkg-price">$380</span>
+            </div>
+            <div class="pkg-desc">Up to 25 photos + 45&ndash;60 sec walkthrough video, cut for the listing + Instagram/Facebook. Delivered 24&ndash;72 hrs.</div>
+          </div>
+        </label>
+
+        <label class="pkg">
+          <input type="radio" name="package" value="Walkthrough Only" data-price="250">
+          <div class="pkg-body">
+            <div class="pkg-top">
+              <span class="pkg-name">Walkthrough Only</span>
+              <span class="pkg-price">$250</span>
+            </div>
+            <div class="pkg-desc">45&ndash;60 sec walkthrough video, vertical cut included. Delivered 24&ndash;72 hrs.</div>
+          </div>
+        </label>
+      </div>
+
+      <div class="summary">
+        <div class="summary-item">
+          <div class="summary-label">Total</div>
+          <div class="summary-value" id="sumTotal">$380</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Deposit (50%)</div>
+          <div class="summary-value accent" id="sumDeposit">$190</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Balance on delivery</div>
+          <div class="summary-value" id="sumBalance">$190</div>
+        </div>
+      </div>
+
+      <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.6rem;">No payment happens on this form. Once your booking is confirmed, an invoice for the deposit will be sent to you separately.</p>
+
+      <!-- Hidden fields so Formspree captures the computed numbers -->
+      <input type="hidden" name="price" id="hiddenPrice" value="380">
+      <input type="hidden" name="deposit" id="hiddenDeposit" value="190">
+      <input type="hidden" name="balance" id="hiddenBalance" value="190">
+      <input type="hidden" name="_subject" id="hiddenSubject" value="Airbnb Shoot Booking">
+    </section>
+
+    <section>
+      <h2>Terms</h2>
+      <div class="terms-box">
+        <ul>
+          <li>A 50% deposit is required to confirm the booking. Once this form is received and the shoot is confirmed, an invoice for the deposit will be sent separately; the shoot date is not held until it's paid. The remaining balance is invoiced on delivery of the final files and due within 7 days.</li>
+          <li>Delivery timeframes: photos within 24&ndash;48 hrs, video within 24&ndash;72 hrs, unless a rush turnaround is agreed separately. Delays caused by weather, site access, or client availability may extend this.</li>
+          <li>If the client cancels or reschedules with less than 24 hours' notice, the deposit is non-refundable.</li>
+          <li>The client receives full usage rights to the final images and video for their own listing, marketing, and personal/business use. Kenn B retains the right to use the same content for portfolio and social media promotion unless the client requests otherwise in writing.</li>
+          <li>Kenn B is not responsible for pre-existing condition, damage, or clutter issues with the property being photographed, and photographs the property as presented on the day.</li>
+          <li>One round of revisions (color/crop adjustments) is included, to be requested within 7 days of delivery. Any further revisions beyond this will incur an additional charge.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sign &amp; confirm</h2>
+      <div class="field-grid">
+        <div class="field">
+          <label for="signName">Type your full name</label>
+          <input type="text" id="signName" name="signature" placeholder="Signature" required>
+        </div>
+        <div class="field">
+          <label for="signDate">Date</label>
+          <input type="date" id="signDate" name="sign_date" required>
+        </div>
+      </div>
+      <label class="agree-row">
+        <input type="checkbox" id="agreeBox" name="agreed" value="Yes" required>
+        <span class="agree-text">I have read and agree to the terms above, including the 50% deposit (invoiced separately once confirmed), delivery timeframes, and cancellation policy.</span>
+      </label>
+
+      <div class="msg error" id="errorMsg">Please fill in every field, choose a package, and tick the agreement box before sending.</div>
+      <div class="msg error" id="serverError">Something went wrong sending this. Please try again, or email kennbofficial@gmail.com directly.</div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Send to Kenn</button>
+    </section>
+  </form>
+
+  <div class="confirm" id="confirmBox">
+    <div class="confirm-box">
+      <div class="confirm-title">Booking sent</div>
+      <p>Thanks &mdash; Kenn's got your details. He'll reach out to confirm the shoot, then send an invoice for the deposit to lock in the date. Keep an eye on your inbox.</p>
+    </div>
+  </div>
+
+  <footer>Kenn B &middot; kennbofficial@gmail.com</footer>
+</div>
+
+<script>
+(function () {
+  var FORM_ENDPOINT = 'https://formspree.io/f/xqpkekjg';
+
+  var today = new Date().toISOString().slice(0, 10);
+  document.getElementById('shootDate').min = today;
+  document.getElementById('signDate').value = today;
+
+  var packages = document.querySelectorAll('input[name="package"]');
+  var sumTotal = document.getElementById('sumTotal');
+  var sumDeposit = document.getElementById('sumDeposit');
+  var sumBalance = document.getElementById('sumBalance');
+  var hiddenPrice = document.getElementById('hiddenPrice');
+  var hiddenDeposit = document.getElementById('hiddenDeposit');
+  var hiddenBalance = document.getElementById('hiddenBalance');
+  var hiddenSubject = document.getElementById('hiddenSubject');
+
+  function val(id) { return document.getElementById(id).value.trim(); }
+
+  function updateSummary() {
+    var selected = document.querySelector('input[name="package"]:checked');
+    var price = selected ? parseInt(selected.getAttribute('data-price'), 10) : 0;
+    var deposit = Math.round(price / 2);
+    var balance = price - deposit;
+    sumTotal.textContent = '$' + price;
+    sumDeposit.textContent = '$' + deposit;
+    sumBalance.textContent = '$' + balance;
+    hiddenPrice.value = price;
+    hiddenDeposit.value = deposit;
+    hiddenBalance.value = balance;
+
+    var listing = val('listing') || 'listing TBC';
+    hiddenSubject.value = 'Airbnb Shoot Booking: ' + listing + (selected ? ' (' + selected.value + ')' : '');
+  }
+  packages.forEach(function (p) { p.addEventListener('change', updateSummary); });
+  document.getElementById('listing').addEventListener('input', updateSummary);
+  updateSummary();
+
+  var form = document.getElementById('bookingForm');
+  var errorMsg = document.getElementById('errorMsg');
+  var serverError = document.getElementById('serverError');
+  var confirmBox = document.getElementById('confirmBox');
+  var submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+    serverError.style.display = 'none';
+
+    var requiredIds = ['clientName', 'clientContact', 'shootDate', 'location', 'listing', 'signName', 'signDate'];
+    var missing = requiredIds.some(function (id) { return !val(id); });
+    var pkgSelected = document.querySelector('input[name="package"]:checked');
+    var agreed = document.getElementById('agreeBox').checked;
+
+    if (missing || !pkgSelected || !agreed) {
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    updateSummary();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (response) {
+      if (response.ok) {
+        form.style.display = 'none';
+        confirmBox.style.display = 'block';
+        confirmBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        throw new Error('Formspree error');
+      }
+    }).catch(function () {
+      serverError.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send to Kenn';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
